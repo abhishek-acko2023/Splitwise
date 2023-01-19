@@ -8,7 +8,6 @@ import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.Expense;
 import com.project.splitwise.model.User;
 import com.project.splitwise.repository.ExpenseDao;
-import com.project.splitwise.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

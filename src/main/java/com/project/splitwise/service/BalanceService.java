@@ -1,9 +1,7 @@
 package com.project.splitwise.service;
 
-import com.project.splitwise.local.BalanceList;
 import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.User;
-//import com.project.splitwise.repository.BalanceDao;
 import com.project.splitwise.responseModel.SettleBalance;
 import com.project.splitwise.responseModel.UserBalanceLog;
 import com.project.splitwise.repository.BalanceDao;
@@ -12,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-//import static jdk.internal.vm.vector.VectorSupport.convert;
 
 @Service
 public class BalanceService {
@@ -51,8 +47,6 @@ public class BalanceService {
             if(x.getDonorId().equals(receiverId)&&x.getReceiverId().equals(donorId)) netAmount -= x.getBalance() ;
         }
         return netAmount ;
-//        if(netAmount<0)return donorUser.getUserName() +" " + "owes" + " " + netAmount + " " + "to " + receiverUser.getUserName() ;
-//        else return receiverUser.getUserName() +" " + "owes" + " " + netAmount + " " + "to " + donorUser.getUserName();
     }
     public List<UserBalanceLog> getUserBalanceLog(Integer userId){
         List<UserBalanceLog> userBalanceLogs = new ArrayList<>() ;

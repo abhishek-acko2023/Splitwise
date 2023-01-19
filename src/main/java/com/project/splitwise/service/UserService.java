@@ -6,17 +6,12 @@ import com.project.splitwise.local.UserList;
 import com.project.splitwise.model.User;
 import com.project.splitwise.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
-@Component
 public class UserService {
 
     public static UserDao userDao ;

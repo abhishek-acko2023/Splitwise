@@ -34,24 +34,9 @@ public class Expense {
             nullable = false
     )
     private Integer userId ;
-//    @OneToOne(mappedBy = "expense")
-//    private User user ;
-
-//    public Expense(double amount , Integer userId , String description) {
-//        this.amount = amount ;
-//        this.userId = userId ;
-//        this.description = description;
-//    }
 
     public Expense() {
     }
-
-//    public Expense(Expense expense) {
-//        this.expense_id = expense_id;
-//        this.description = description;
-//        this.amount = amount;
-//        this.userId = userId;
-//    }
 
     public Expense(Integer expense_id, String description, double amount, Integer userId) {
         System.out.println("Working "+expense_id );
@@ -88,8 +73,5 @@ public class Expense {
     public Integer getUserId() {
         return userId;
     }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+
 }

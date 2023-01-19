@@ -1,11 +1,6 @@
 package com.project.splitwise.model;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-
 @Entity(name = "users")
 public class User {
     @Id
@@ -67,12 +62,4 @@ public class User {
         this.userEmail = userEmail;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                '}';
-    }
 }
