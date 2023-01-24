@@ -1,7 +1,16 @@
 package com.project.splitwise.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "expenses")
 public class Expense {
     @Id
@@ -35,43 +44,21 @@ public class Expense {
     )
     private Integer userId ;
 
-    public Expense() {
-    }
+    @Column(
+            name = "group_id",
+            nullable = false
+    )
+    private Integer groupId ;
 
-    public Expense(Integer expense_id, String description, double amount, Integer userId) {
-        System.out.println("Working "+expense_id );
-        this.expense_id = expense_id;
-        this.description = description;
-        this.amount = amount;
-        this.userId = userId;
-    }
+    @Column(
+            name = "expense_partners",
+            nullable = false
+    )
+    private List<Integer> expensePartners = new ArrayList<>();
 
-    public Integer getExpense_id() {
-        return expense_id;
-    }
-
-    public void setExpense_id(Integer expense_id) {
-        this.expense_id = expense_id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
+    @Column(
+            name = "split_percentage"
+    )
+    private List<Double> splitPercentage = new ArrayList<>();
 
 }
