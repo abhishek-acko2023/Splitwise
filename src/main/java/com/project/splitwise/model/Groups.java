@@ -1,14 +1,17 @@
 package com.project.splitwise.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "groups")
 public class Groups {
     @Id
@@ -21,51 +24,18 @@ public class Groups {
             strategy = GenerationType.SEQUENCE,
             generator = "group_id_sequence"
     )
-            @Column(
-                    name = "group_id",
-                    nullable = false
-            )
+    @Column(
+            name = "group_id",
+            nullable = false
+    )
     private Integer groupId ;
     @Column(
             name = "group_members"
     )
-   private List<Integer> groupMembers = new ArrayList<>() ;
+    private List<Integer> groupMembers = new ArrayList<>() ;
 
     @Column(
             name = "group_creator"
     )
     private Integer groupCreatedBy ;
-
-    public Groups(Integer groupId, ArrayList<Integer> groupMembers , Integer groupCreatedBy) {
-        this.groupId = groupId;
-        this.groupMembers = groupMembers;
-        this.groupCreatedBy = groupCreatedBy;
-    }
-
-    public Groups() {
-    }
-
-    public Integer getGroupCreatedBy() {
-        return groupCreatedBy;
-    }
-
-    public void setGroupCreatedBy(Integer groupCreatedBy) {
-        this.groupCreatedBy = groupCreatedBy;
-    }
-
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
-    public List<Integer> getGroupMembers() {
-        return groupMembers;
-    }
-
-    public void setGroupMembers(List<Integer> groupMembers) {
-        this.groupMembers = groupMembers;
-    }
 }

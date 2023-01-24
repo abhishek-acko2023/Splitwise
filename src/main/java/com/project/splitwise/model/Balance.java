@@ -1,7 +1,14 @@
 package com.project.splitwise.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "balances")
 public class Balance {
     @Id
@@ -40,53 +47,10 @@ public class Balance {
     )
     private Integer groupId ;
 
-    public Balance() {
-    }
-
     public Balance(Integer donorId, Integer receiverId, double balance , Integer groupId) {
         this.donorId = donorId;
         this.receiverId = receiverId;
         this.balance = balance;
         this.groupId = groupId ;
-    }
-
-    public Integer getBalanceId() {
-        return balanceId;
-    }
-
-    public Integer getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Integer groupId) {
-        this.groupId = groupId;
-    }
-
-    public void setBalanceId(Integer balanceId) {
-        this.balanceId = balanceId;
-    }
-
-    public Integer getDonorId() {
-        return donorId;
-    }
-
-    public void setDonorId(Integer donorId) {
-        this.donorId = donorId;
-    }
-
-    public Integer getReceiverId() {
-        return receiverId;
-    }
-
-    public void setReceiverId(Integer receiverId) {
-        this.receiverId = receiverId;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 }

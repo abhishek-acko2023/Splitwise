@@ -1,11 +1,13 @@
 package com.project.splitwise.model;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "users")
 public class User {
     @Id
@@ -34,38 +36,6 @@ public class User {
             unique = true
     )
     private String userEmail ;
-
-    public User(Integer userId, String userName, String userEmail) {
-        this.userId = userId;
-        this.userName = userName;
-        this.userEmail = userEmail;
-    }
-    public User() {
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
 
     @Override
     public String toString() {

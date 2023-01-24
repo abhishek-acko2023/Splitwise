@@ -2,16 +2,12 @@ package com.project.splitwise.service;
 
 
 import com.project.splitwise.Response;
-import com.project.splitwise.local.UserList;
 import com.project.splitwise.model.User;
 import com.project.splitwise.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLClientInfoException;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,7 +25,7 @@ public class UserService {
     public Response addUser(User user){
         Response response = new Response("User Added!!" , 200) ;
         try{
-            UserList.usersList.add(userDao.save(user));
+            userDao.save(user);
         }catch (Exception e){
             response.setMessage("User already exist!!");
             response.setStatusCode(0);
@@ -38,9 +34,6 @@ public class UserService {
     }
 
     public List<User> getUsers(){
-        for(User i:UserList.usersList){
-            System.out.println(i.getUserName());
-        }
         return userDao.findAll();
     }
 
