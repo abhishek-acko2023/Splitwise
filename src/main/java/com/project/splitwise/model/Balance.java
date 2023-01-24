@@ -34,18 +34,32 @@ public class Balance {
             nullable = false
     )
     private double balance ;
+    @Column(
+            name = "group_id",
+            nullable = false
+    )
+    private Integer groupId ;
 
     public Balance() {
     }
 
-    public Balance(Integer donorId, Integer receiverId, double balance) {
+    public Balance(Integer donorId, Integer receiverId, double balance , Integer groupId) {
         this.donorId = donorId;
         this.receiverId = receiverId;
         this.balance = balance;
+        this.groupId = groupId ;
     }
 
     public Integer getBalanceId() {
         return balanceId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public void setBalanceId(Integer balanceId) {

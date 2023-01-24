@@ -27,7 +27,7 @@ public class BalanceService {
 
 
     public void createBalance(Balance balance){
-        System.out.println(balance.getDonorId() + " " + balance.getReceiverId());
+//        System.out.println(balance.getDonorId() + " " + balance.getReceiverId());
         balancedao.save(balance);
     }
     public void updateBalance(Integer donor_id,Integer receiver_id , double amountToPay){
