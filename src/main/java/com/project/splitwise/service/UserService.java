@@ -5,14 +5,12 @@ import com.project.splitwise.Response;
 import com.project.splitwise.model.User;
 import com.project.splitwise.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
-@Component
 public class UserService {
 
     public static UserDao userDao ;

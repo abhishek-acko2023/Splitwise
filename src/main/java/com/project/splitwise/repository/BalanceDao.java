@@ -1,10 +1,9 @@
 package com.project.splitwise.repository;
 
 import com.project.splitwise.model.Balance;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
-@Component
+@Repository
 public interface BalanceDao extends JpaRepository<Balance,Integer> {
 }
