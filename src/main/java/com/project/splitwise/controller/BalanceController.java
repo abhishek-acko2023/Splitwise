@@ -45,4 +45,10 @@ public class BalanceController {
         balanceService.settleBalance(settleBalance);
     }
 
+    @GetMapping("/{groupId}/{userId}")
+    public List<Balance> getUserGroupBalance(@PathVariable("groupId") Integer groupId,
+                                             @PathVariable("userId") Integer userId)
+    {
+        return balanceService.getUserGroupBalance(groupId,userId);
+    }
 }

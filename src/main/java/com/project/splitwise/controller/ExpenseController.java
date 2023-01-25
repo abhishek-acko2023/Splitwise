@@ -28,4 +28,5 @@ public class ExpenseController {
 
     @GetMapping("/byUser/{userId}")
     public List<Expense> getExpenseOfUser(@PathVariable("userId") Integer userId){return expenseService.getExpenseOfUser(userId) ;}
+
 }
