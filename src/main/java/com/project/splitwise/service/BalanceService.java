@@ -37,31 +37,39 @@ public class BalanceService {
     }
 
     public List<Balance> getBalance(){
-        return balancedao.findAll() ;
+        List<Balance> allBalances = new ArrayList<>();
+        for(Balance balance : balancedao.findAll()){
+            if(!balance.getDonorId().equals(balance.getReceiverId())){
+                allBalances.add(balance);
+            }
+        }
+        return allBalances;
     }
 
-        public double balanceWithUser(Integer donorId , Integer receiverId){
+    public double balanceWithUser(Integer donorId , Integer receiverId){
         double netAmount = 0 ;
-        for(Balance x: balancedao.findAll()){
-            if(x.getDonorId().equals(donorId)&&x.getReceiverId().equals(receiverId)) netAmount += x.getBalance() ;
-            if(x.getDonorId().equals(receiverId)&&x.getReceiverId().equals(donorId)) netAmount -= x.getBalance() ;
+        for(Balance balance : balancedao.findAll()){
+            if(balance.getDonorId().equals(donorId) && balance.getReceiverId().equals(receiverId))
+                netAmount += balance.getBalance();
+            if(balance.getDonorId().equals(receiverId) && balance.getReceiverId().equals(donorId))
+                netAmount -= balance.getBalance();
         }
         return netAmount ;
     }
+
     public List<UserBalanceLog> getUserBalanceLog(Integer userId){
         List<UserBalanceLog> userBalanceLogs = new ArrayList<>() ;
-        for(User x:userDao.findAll()){
-            if(!x.getUserId().equals(userId)){
-                userBalanceLogs.add(new UserBalanceLog(x,balanceWithUser(userId,x.getUserId())));
+        for(User user : userDao.findAll()){
+            if(!user.getUserId().equals(userId)){
+                userBalanceLogs.add(new UserBalanceLog(user,balanceWithUser(userId,user.getUserId())));
             }
         }
         return userBalanceLogs ;
     }
 
     public void settleBalance(SettleBalance settleBalance){
-        for(Balance x: balancedao.findAll()){
-            if(x.getReceiverId().equals(settleBalance.getUser2())&&x.getDonorId().equals(settleBalance.getUser1())&&x.getGroupId().equals(settleBalance.getGroupId())){
-                System.out.println(x.getBalance() + " " + settleBalance.getAmount());
+        for(Balance x: balancedao.findAllById(Collections.singletonList(settleBalance.getUser1()))){
+            if(x.getReceiverId().equals(settleBalance.getUser2())){
                 x.setBalance(x.getBalance()-settleBalance.getAmount());
                 balancedao.save(x);
                 return;
@@ -69,4 +77,13 @@ public class BalanceService {
         }
     }
 
+    public List<Balance> getUserGroupBalance(Integer groupId, Integer userId) {
+        List <Balance> userGroupBalance = new ArrayList<>();
+        for(Balance balance : balancedao.findAll()){
+            if(balance.getGroupId().equals(groupId) && balance.getDonorId().equals(userId) && !balance.getDonorId().equals(balance.getReceiverId())){
+                userGroupBalance.add(balance);
+            }
+        }
+        return userGroupBalance;
+    }
 }
