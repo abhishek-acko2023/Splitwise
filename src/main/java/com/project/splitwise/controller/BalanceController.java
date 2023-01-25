@@ -1,5 +1,6 @@
 package com.project.splitwise.controller;
 
+import com.project.splitwise.dto.BalanceDTO;
 import com.project.splitwise.model.Balance;
 import com.project.splitwise.responseModel.SettleBalance;
 import com.project.splitwise.responseModel.UserBalanceLog;
@@ -27,7 +28,7 @@ public class BalanceController {
         balanceService.updateBalance(donor_id,receiver_id,amountToPay);
     }
 
-    @GetMapping("/get") public List<Balance> getBalance(){
+    @GetMapping("/get") public List<BalanceDTO> getBalance(){
         return balanceService.getBalance() ;
     }
 

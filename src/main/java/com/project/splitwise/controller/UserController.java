@@ -1,6 +1,7 @@
 package com.project.splitwise.controller;
 
 import com.project.splitwise.Response;
+import com.project.splitwise.dto.UserDTO;
 import com.project.splitwise.repository.UserDao;
 import com.project.splitwise.service.UserService;
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class UserController {
     };
 
     @GetMapping("/get")
-    public List<User> getUsers(){
+    public List<UserDTO> getUsers(){
         return userService.getUsers() ;
     }
 

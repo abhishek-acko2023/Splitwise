@@ -1,5 +1,6 @@
 package com.project.splitwise.service;
 
+import com.project.splitwise.dto.BalanceDTO;
 import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.User;
 import com.project.splitwise.responseModel.SettleBalance;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BalanceService {
@@ -36,8 +38,25 @@ public class BalanceService {
       }
     }
 
-    public List<Balance> getBalance(){
-        return balancedao.findAll() ;
+    public BalanceDTO convertEntityToDto(Balance balance){
+        BalanceDTO balanceDTO = new BalanceDTO() ;
+        String donorName = "" ;
+        String receiverName ="" ;
+        for(User user: userDao.findAll()){
+            if(user.getUserId().equals(balance.getDonorId()))donorName = user.getUserName();
+            if(user.getUserId().equals(balance.getReceiverId()))receiverName = user.getUserName();
+        }
+        balanceDTO.setDonorName(donorName);
+        balanceDTO.setReceiverName(receiverName);
+        balanceDTO.setAmount(balance.getBalance());
+        return balanceDTO ;
+    }
+
+    public List<BalanceDTO> getBalance(){
+        return balancedao.findAll()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
         public double balanceWithUser(Integer donorId , Integer receiverId){

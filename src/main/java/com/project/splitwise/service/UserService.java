@@ -2,12 +2,14 @@ package com.project.splitwise.service;
 
 
 import com.project.splitwise.Response;
+import com.project.splitwise.dto.UserDTO;
 import com.project.splitwise.model.User;
 import com.project.splitwise.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,8 +33,17 @@ public class UserService {
        return response;
     }
 
-    public List<User> getUsers(){
-        return userDao.findAll();
+
+    public UserDTO convertEntityToDto(User user){
+        UserDTO userDTO = new UserDTO();
+        userDTO.setUserName(user.getUserName());
+        return userDTO ;
+    }
+    public List<UserDTO> getUsers(){
+        return userDao.findAll()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
     }
 
     public User getUser(Integer id){
