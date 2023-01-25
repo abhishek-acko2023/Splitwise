@@ -1,56 +1,82 @@
 package com.project.splitwise.service;
 
-import com.project.splitwise.controller.BalanceController;
-import com.project.splitwise.local.BalanceList;
-import com.project.splitwise.local.ExpenseList;
-import com.project.splitwise.local.UserList;
 import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.Expense;
-import com.project.splitwise.model.User;
+import com.project.splitwise.repository.BalanceDao;
 import com.project.splitwise.repository.ExpenseDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ExpenseService {
     public static ExpenseDao expenseDao;
+    private static BalanceDao balanceDao;
+
     @Autowired
-    public ExpenseService(ExpenseDao expenseDao) {
+    public ExpenseService(ExpenseDao expenseDao,
+                          BalanceDao balanceDao) {
         ExpenseService.expenseDao = expenseDao;
+        this.balanceDao = balanceDao;
     }
 
-    public void addExpense (Expense expense){
-        double amountToPay = 0 ;
-        int cnt = 0 ;
-        Expense currentExpense = expenseDao.save(expense);
-        ExpenseList.expenseList.add(currentExpense) ;
-        try{
-            amountToPay = expense.getAmount()/UserList.usersList.size() ;
-        }catch (ArithmeticException exception){
-            System.out.println(exception.getMessage());
+    //expense log bhi banana hai
+    public void addExpense (Expense expense) {
+
+        int membersCount = expense.getExpensePartners().size();
+        boolean isExists  = false ;
+        double splitAmount = 0;
+        int index = 0;
+
+        List<Balance> groupBalances = new ArrayList<>() ;
+        for(Balance balance : balanceDao.findAll()){
+            if(balance.getGroupId().equals(expense.getGroupId()))groupBalances.add(balance) ;
         }
-        for(Balance x: BalanceList.balanceList){
-            if(x.getDonorId().equals(currentExpense.getUserId())){
-                //update in db
-                x.setBalance(x.getBalance()+amountToPay);
-                BalanceController.updateBalance(currentExpense.getUserId(),x.getReceiverId(),amountToPay);
-                cnt++ ;
-            }
+
+        if(expense.getSplitPercentage().size() == 0){
+           double splitPercentage = 100d/membersCount;
+           List<Double> split = new ArrayList<Double>(Collections.nCopies(membersCount, splitPercentage));
+           expense.setSplitPercentage(split);
         }
-        if(cnt==0){
-            for(User x: UserList.usersList){
-                if(!x.getUserId().equals(currentExpense.getUserId())){
-                    System.out.println(x.getUserId());
-                    BalanceList.balanceList.add(new Balance(currentExpense.getUserId(),x.getUserId(),amountToPay));
-                    BalanceController.createBalance(new Balance(currentExpense.getUserId(),x.getUserId(),amountToPay));
+
+        if(groupBalances.size() == 0)
+        {
+            for(Integer groupMem : expense.getExpensePartners()){
+                if(!groupMem.equals(expense.getUserId())){
+                    splitAmount = (expense.getAmount() * expense.getSplitPercentage().get(index))/100;
+                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId());
+                    balanceDao.save(balance);
                 }
+                index++;
             }
         }
-
+        else {
+            index = 0;
+            for(Integer groupMem : expense.getExpensePartners()) {
+                isExists = false;
+                for (Balance balance : groupBalances) {
+                    splitAmount = (expense.getAmount()*(expense.getSplitPercentage().get(index)))/100;
+                    if (balance.getDonorId().equals(expense.getUserId()) && balance.getReceiverId().equals(groupMem)) {
+                        balance.setBalance(balance.getBalance() + splitAmount);
+                        balanceDao.save(balance) ;
+                        isExists = true ;
+                        break ;
+                    }
+                }
+                if(!isExists) {
+                    splitAmount = (expense.getAmount() * expense.getSplitPercentage().get(index))/100;
+                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId());
+                    balanceDao.save(balance);
+                }
+                index++ ;
+            }
+        }
+        expenseDao.save(expense);
     }
+
     public List<Expense> getExpenses(){
         return expenseDao.findAll();
     }
