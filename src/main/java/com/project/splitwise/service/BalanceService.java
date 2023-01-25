@@ -59,8 +59,8 @@ public class BalanceService {
     }
 
     public void settleBalance(SettleBalance settleBalance){
-        for(Balance x: balancedao.findAllById(Collections.singletonList(settleBalance.getUser1()))){
-            if(x.getReceiverId().equals(settleBalance.getUser2())){
+        for(Balance x: balancedao.findAll()){
+            if(x.getReceiverId().equals(settleBalance.getUser2())&&x.getDonorId().equals(settleBalance.getUser1())&&x.getGroupId().equals(settleBalance.getGroupId())){
                 System.out.println(x.getBalance() + " " + settleBalance.getAmount());
                 x.setBalance(x.getBalance()-settleBalance.getAmount());
                 balancedao.save(x);

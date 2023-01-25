@@ -5,10 +5,22 @@ public class SettleBalance {
     private Integer user2 ;
     private double amount ;
 
-    public SettleBalance(Integer user1, Integer user2, double amount) {
+    private Integer groupId ;
+
+    public SettleBalance(Integer user1, Integer user2, double amount , Integer groupId) {
         this.user1 = user1;
         this.user2 = user2;
         this.amount = amount;
+        this.groupId = groupId ;
+    }
+
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
     public Integer getUser1() {
