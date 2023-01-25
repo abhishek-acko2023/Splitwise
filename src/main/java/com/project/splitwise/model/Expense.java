@@ -61,4 +61,19 @@ public class Expense {
     )
     private List<Double> splitPercentage = new ArrayList<>();
 
+    @Column(
+            name = "group_name",
+            unique = false
+    )
+    private String groupName ;
+
+    public Expense( String description, double amount, Integer userId, Integer groupId, List<Integer> expensePartners, List<Double> splitPercentage, String groupName) {
+        this.description = description;
+        this.amount = amount;
+        this.userId = userId;
+        this.groupId = groupId;
+        this.expensePartners = expensePartners;
+        this.splitPercentage = splitPercentage;
+        this.groupName = groupName;
+    }
 }

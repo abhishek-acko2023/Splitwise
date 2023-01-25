@@ -1,30 +1,38 @@
 package com.project.splitwise.service;
 
+import com.project.splitwise.dto.ExpenseDTO;
 import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.Expense;
+import com.project.splitwise.model.User;
 import com.project.splitwise.repository.BalanceDao;
 import com.project.splitwise.repository.ExpenseDao;
+import com.project.splitwise.repository.UserDao;
+import com.project.splitwise.responseModel.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExpenseService {
     public static ExpenseDao expenseDao;
     private static BalanceDao balanceDao;
+    private final UserDao userDao;
 
     @Autowired
     public ExpenseService(ExpenseDao expenseDao,
-                          BalanceDao balanceDao) {
+                          BalanceDao balanceDao,
+                          UserDao userDao) {
         ExpenseService.expenseDao = expenseDao;
         this.balanceDao = balanceDao;
+        this.userDao = userDao;
     }
 
     //expense log bhi banana hai
-    public void addExpense (Expense expense) {
+    public Response addExpense (Expense expense) {
 
         int membersCount = expense.getExpensePartners().size();
         boolean isExists  = false ;
@@ -47,7 +55,7 @@ public class ExpenseService {
             for(Integer groupMem : expense.getExpensePartners()){
                 if(!groupMem.equals(expense.getUserId())){
                     splitAmount = (expense.getAmount() * expense.getSplitPercentage().get(index))/100;
-                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId());
+                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId() , expense.getGroupName());
                     balanceDao.save(balance);
                 }
                 index++;
@@ -68,23 +76,40 @@ public class ExpenseService {
                 }
                 if(!isExists) {
                     splitAmount = (expense.getAmount() * expense.getSplitPercentage().get(index))/100;
-                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId());
+                    Balance balance = new Balance(expense.getUserId(), groupMem, splitAmount, expense.getGroupId(),expense.getGroupName());
                     balanceDao.save(balance);
                 }
                 index++ ;
             }
         }
         expenseDao.save(expense);
+        return new Response("Expense Added" , 200);
     }
 
-    public List<Expense> getExpenses(){
-        return expenseDao.findAll();
+    public ExpenseDTO convertEntityToDto(Expense expense){
+        ExpenseDTO expenseDTO = new ExpenseDTO() ;
+        String paidBy = "" ;
+        for(User user: userDao.findAll()){
+         if(expense.getUserId().equals(user.getUserId()))paidBy=user.getUserName();
+        }
+        expenseDTO.setDescription(expense.getDescription());
+        expenseDTO.setGroupName(expense.getGroupName());
+        expenseDTO.setPaidBy(paidBy);
+        expenseDTO.setAmountPaid(expense.getAmount());
+        return expenseDTO ;
     }
 
-    public List<Expense> getExpenseOfUser(Integer userId){
-        List<Expense> userExpenses = new ArrayList<>() ;
+        public List<ExpenseDTO> getExpenses(){
+        return expenseDao.findAll()
+                .stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ExpenseDTO> getExpenseOfUser(Integer userId){
+        List<ExpenseDTO> userExpenses = new ArrayList<>() ;
         for(Expense x:expenseDao.findAll()){
-            if(x.getUserId().equals(userId))userExpenses.add(x) ;
+            if(x.getUserId().equals(userId))userExpenses.add(convertEntityToDto(x)) ;
         }
         return userExpenses ;
     }

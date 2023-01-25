@@ -1,4 +1,4 @@
-package com.project.splitwise;
+package com.project.splitwise.responseModel;
 
 public class Response {
 

@@ -7,11 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BalanceDTO {
-    private String donorName ;
-    private String receiverName ;
-
-    private String groupName ;
-
-    private double amount ;
+public class BalancelogDTO {
+    private String userName ;
+    private double netAmount ;
 }

@@ -1,9 +1,10 @@
 package com.project.splitwise.controller;
 
 import com.project.splitwise.dto.BalanceDTO;
+import com.project.splitwise.dto.BalancelogDTO;
 import com.project.splitwise.model.Balance;
+import com.project.splitwise.responseModel.Response;
 import com.project.splitwise.responseModel.SettleBalance;
-import com.project.splitwise.responseModel.UserBalanceLog;
 import com.project.splitwise.service.BalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,22 +29,22 @@ public class BalanceController {
         balanceService.updateBalance(donor_id,receiver_id,amountToPay);
     }
 
-    @GetMapping("/get") public List<BalanceDTO> getBalance(){
+    @GetMapping("/") public List<BalanceDTO> getBalance(){
         return balanceService.getBalance() ;
     }
 
-    @GetMapping("/get/{donorId}/{receiverId}")
+    @GetMapping("/{donorId}/{receiverId}")
     public double balanceWithUser(@PathVariable("donorId") Integer donorId , @PathVariable("receiverId") Integer receiverId){
         return balanceService.balanceWithUser(donorId,receiverId) ;}
 
-    @GetMapping("/get/{userId}")
-    public List<UserBalanceLog> getUserBalanceLog(@PathVariable("userId") Integer userId){
+    @GetMapping("/{userId}")
+    public List<BalancelogDTO> getUserBalanceLog(@PathVariable("userId") Integer userId){
         return balanceService.getUserBalanceLog(userId);
     }
 
     @PutMapping("/settle")
-    public void settleBalance(@RequestBody SettleBalance settleBalance){
-        balanceService.settleBalance(settleBalance);
+    public Response settleBalance(@RequestBody SettleBalance settleBalance){
+        return balanceService.settleBalance(settleBalance);
     }
 
 }

@@ -38,4 +38,10 @@ public class Groups {
             name = "group_creator"
     )
     private Integer groupCreatedBy ;
+    @Column(
+            name = "group_name",
+            nullable = false,
+            unique = false
+    )
+    private String groupName ;
 }

@@ -4,14 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BalanceDTO {
-    private String donorName ;
-    private String receiverName ;
-
+public class GroupDetailDTO {
+    private List<String> groupMembers ;
     private String groupName ;
-
-    private double amount ;
+    private String createdBy ;
 }
