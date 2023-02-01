@@ -2,9 +2,8 @@ package com.project.splitwise.controller;
 
 import com.project.splitwise.dto.ExpenseDTO;
 import com.project.splitwise.model.Expense;
-import com.project.splitwise.model.User;
 import com.project.splitwise.responseModel.Response;
-import com.project.splitwise.service.ExpenseService;
+import com.project.splitwise.service.expense.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +18,10 @@ public class ExpenseController {
         this.expenseService = expenseService;
     }
 
-    @PostMapping("/add")
-    public Response addExpense (@RequestBody Expense expense){
-       return expenseService.addExpense(expense);
+
+    @PostMapping("/add/{expenseType}")
+    public Response addExpense (@RequestBody Expense expense , @PathVariable String expenseType){
+       return expenseService.addExpense(expense , expenseType);
     }
     @GetMapping("/")
     public List<ExpenseDTO> getExpenses(){

@@ -49,7 +49,7 @@ public class Balance {
     @Column(
             name = "group_name",
             unique = false ,
-            nullable = false
+            nullable = true
     )
     private String groupName ;
 
@@ -59,5 +59,11 @@ public class Balance {
         this.balance = balance;
         this.groupId = groupId;
         this.groupName = groupName;
+    }
+
+    public Balance(Integer donorId, Integer receiverId, double balance) {
+        this.donorId = donorId;
+        this.receiverId = receiverId;
+        this.balance = balance;
     }
 }

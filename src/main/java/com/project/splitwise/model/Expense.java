@@ -45,8 +45,7 @@ public class Expense {
     private Integer userId ;
 
     @Column(
-            name = "group_id",
-            nullable = false
+            name = "group_id"
     )
     private Integer groupId ;
 
@@ -59,7 +58,7 @@ public class Expense {
     @Column(
             name = "split_percentage"
     )
-    private List<Double> splitPercentage = new ArrayList<>();
+    private List<Double> splits = new ArrayList<>();
 
     @Column(
             name = "group_name",
@@ -67,13 +66,13 @@ public class Expense {
     )
     private String groupName ;
 
-    public Expense( String description, double amount, Integer userId, Integer groupId, List<Integer> expensePartners, List<Double> splitPercentage, String groupName) {
+    public Expense(String description, double amount, Integer userId, Integer groupId, List<Integer> expensePartners, List<Double> splits, String groupName) {
         this.description = description;
         this.amount = amount;
         this.userId = userId;
         this.groupId = groupId;
         this.expensePartners = expensePartners;
-        this.splitPercentage = splitPercentage;
+        this.splits = splits;
         this.groupName = groupName;
     }
 }
