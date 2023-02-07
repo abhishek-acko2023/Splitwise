@@ -1,4 +1,4 @@
-package com.project.splitwise.repository;
+package com.project.splitwise.dao;
 
 import com.project.splitwise.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;

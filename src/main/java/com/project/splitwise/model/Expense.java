@@ -61,10 +61,17 @@ public class Expense {
     private List<Double> splits = new ArrayList<>();
 
     @Column(
-            name = "group_name",
-            unique = false
+            name = "group_name"
     )
     private String groupName ;
+
+    public Expense(Integer expense_id, String description, double amount, Integer userId, List<Integer> expensePartners) {
+        this.expense_id = expense_id;
+        this.description = description;
+        this.amount = amount;
+        this.userId = userId;
+        this.expensePartners = expensePartners;
+    }
 
     public Expense(String description, double amount, Integer userId, Integer groupId, List<Integer> expensePartners, List<Double> splits, String groupName) {
         this.description = description;
@@ -75,4 +82,5 @@ public class Expense {
         this.splits = splits;
         this.groupName = groupName;
     }
+
 }

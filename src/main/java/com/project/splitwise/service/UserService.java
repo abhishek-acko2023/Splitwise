@@ -4,10 +4,9 @@ package com.project.splitwise.service;
 import com.project.splitwise.responseModel.Response;
 import com.project.splitwise.dto.UserDTO;
 import com.project.splitwise.model.User;
-import com.project.splitwise.repository.UserDao;
+import com.project.splitwise.dao.UserDao;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

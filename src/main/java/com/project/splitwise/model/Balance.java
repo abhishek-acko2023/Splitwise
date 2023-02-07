@@ -42,14 +42,11 @@ public class Balance {
     )
     private double balance ;
     @Column(
-            name = "group_id",
-            nullable = false
+            name = "group_id"
     )
     private Integer groupId ;
     @Column(
-            name = "group_name",
-            unique = false ,
-            nullable = true
+            name = "group_name"
     )
     private String groupName ;
 
@@ -59,6 +56,13 @@ public class Balance {
         this.balance = balance;
         this.groupId = groupId;
         this.groupName = groupName;
+    }
+
+    public Balance(Integer balanceId, Integer donorId, Integer receiverId, double balance) {
+        this.balanceId = balanceId;
+        this.donorId = donorId;
+        this.receiverId = receiverId;
+        this.balance = balance;
     }
 
     public Balance(Integer donorId, Integer receiverId, double balance) {

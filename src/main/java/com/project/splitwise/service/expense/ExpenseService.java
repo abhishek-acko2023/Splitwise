@@ -1,13 +1,11 @@
 package com.project.splitwise.service.expense;
 
 import com.project.splitwise.dto.ExpenseDTO;
-import com.project.splitwise.interfaces.SplitService;
-import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.Expense;
 import com.project.splitwise.model.User;
-import com.project.splitwise.repository.BalanceDao;
-import com.project.splitwise.repository.ExpenseDao;
-import com.project.splitwise.repository.UserDao;
+import com.project.splitwise.dao.BalanceDao;
+import com.project.splitwise.dao.ExpenseDao;
+import com.project.splitwise.dao.UserDao;
 import com.project.splitwise.responseModel.Response;
 import com.project.splitwise.service.balance.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,22 +29,27 @@ public class ExpenseService {
     private UserDao userDao;
     @Autowired
     EqualSplit equalSplit;
+    @Autowired
+    CustomSplit customSplit ;
+    @Autowired
+    PercentageSplit percentageSplit ;
 
 
     public Response addExpense (Expense expense , String expenseType) {
-        SplitService splitService = null;
-//        System.out.println(expenseType + " " + SplitService.Split.EQUAL.name());
         if(expenseType.equals(SplitService.Split.EQUAL.name())){
-            splitService = new EqualSplit();
-        }else if(expenseType.equals(SplitService.Split.CUSTOM.name())){
-            splitService = new CustomSplit();
-        }else if(expenseType.equals(SplitService.Split.PERCENTAGE.name())){
-            splitService = new PercentageSplit();
+            System.out.println("Equal");
+            equalSplit.splitExpense(expense); ;
+        }
+        else if(expenseType.equals(SplitService.Split.CUSTOM.name())){
+            customSplit.splitExpense(expense); ;
+        }
+        else if(expenseType.equals(SplitService.Split.PERCENTAGE.name())){
+            percentageSplit.splitExpense(expense); ;
         }
 
 
         try{
-            splitService.splitExpense(expense);
+//            splitService.splitExpense(expense);
             expenseDao.save(expense);
             return new Response("Expense Added" , 200);
         }catch (Exception exception){

@@ -6,8 +6,8 @@ import com.project.splitwise.model.Balance;
 import com.project.splitwise.model.User;
 import com.project.splitwise.responseModel.Response;
 import com.project.splitwise.responseModel.SettleBalance;
-import com.project.splitwise.repository.BalanceDao;
-import com.project.splitwise.repository.UserDao;
+import com.project.splitwise.dao.BalanceDao;
+import com.project.splitwise.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -83,14 +83,25 @@ public class BalanceService {
     }
 
     public Response settleBalance(SettleBalance settleBalance){
-        for(Balance balance : balancedao.findAll()){
-            if(balance.getReceiverId().equals(settleBalance.getUser2())&&
-                    balance.getDonorId().equals(settleBalance.getUser1())&&
-                    balance.getGroupId().equals(settleBalance.getGroupId())){
-                balance.setBalance(balance.getBalance()-settleBalance.getAmount());
-                balancedao.save(balance);
+        if(settleBalance.getGroupId() != null){
+            for(Balance balance : balancedao.findAll()){
+                if(balance.getReceiverId().equals(settleBalance.getUser2())&&
+                        balance.getDonorId().equals(settleBalance.getUser1())&&
+                        balance.getGroupId().equals(settleBalance.getGroupId())){
+                    balance.setBalance(balance.getBalance() - settleBalance.getAmount());
+                    balancedao.save(balance);
+                }
+            }
+        }else{
+            for(Balance balance : balancedao.findAll()){
+                if(balance.getReceiverId().equals(settleBalance.getUser2())&&
+                        balance.getDonorId().equals(settleBalance.getUser1())){
+                    balance.setBalance(balance.getBalance() - settleBalance.getAmount());
+                    balancedao.save(balance);
+                }
             }
         }
+
         return new Response("Balance Updated!!" , 200) ;
     }
 
