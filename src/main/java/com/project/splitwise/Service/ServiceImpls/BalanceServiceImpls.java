@@ -45,14 +45,17 @@ public class BalanceServiceImpls implements BalanceService {
         return balanceDTO ;
     }
 
-    public List<BalanceDTO> getBalance(){
+    public Optional<Object> getBalance(){
         List<BalanceDao> allBalances = balanceRepo.findAll();
         List<BalanceDTO> balances = new ArrayList<>();
         for(BalanceDao balanceDao : allBalances){
             if(balanceDao.getPayerId().equals(balanceDao.getReceiverId())) continue;
             balances.add(generateBalanceDTO(balanceDao));
         }
-        return balances;
+        if(balances.size()==0){
+            return Optional.of("No balances present") ;
+        }
+        return Optional.of(balances);
     }
 
     public Object balanceWithUser(Integer payerId , Integer receiverId){

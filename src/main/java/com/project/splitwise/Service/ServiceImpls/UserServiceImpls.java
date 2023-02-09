@@ -60,12 +60,12 @@ public class UserServiceImpls implements UserService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
-    public UserDao getUser(Integer id){
+    public Optional<Object> getUser(Integer id){
         for(UserDao x: userRepo.findAll()){
             if(x.getUserId().equals(id))
-                return x ;
+                return Optional.of(x);
         }
-        return new UserDao() ;
+        return Optional.of("User not found");
     }
     public ResponseEntity<Object> updateUser(User user) {
         Optional<UserDao> optionalUserDao = userRepo.findByUserEmail(user.getUserEmail());

@@ -4,9 +4,12 @@ import com.project.splitwise.Dao.GroupDao;
 import com.project.splitwise.Dto.Request.Group;
 import com.project.splitwise.Service.ServiceImpls.GroupServiceImpls;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/splitwise/group")
@@ -19,17 +22,17 @@ public class GroupController {
     }
 
     @PostMapping("/create")
-    public int createGroup(@RequestBody Group group){
+    public ResponseEntity<Object> createGroup(@RequestBody Group group){
         return groupServiceImpls.createGroup(group);
     }
 
     @GetMapping("/all")
-    public List<GroupDao> getGroups(){
+    public Optional<Object>  getGroups(){
         return  groupServiceImpls.getGroups() ;
     }
 
     @GetMapping("/{groupId}")
-    public GroupDao groupDetails(@PathVariable("groupId") Integer groupId){
+    public Optional<Object> groupDetails(@PathVariable("groupId") Integer groupId){
         return groupServiceImpls.groupDetails(groupId);
     }
 

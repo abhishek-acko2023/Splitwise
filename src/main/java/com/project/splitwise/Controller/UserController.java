@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/splitwise/user")
@@ -31,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDao getUser(@PathVariable("userId") Integer userId){
+    public Optional<Object> getUser(@PathVariable("userId") Integer userId){
         return userServiceImpls.getUser(userId);}
 
     @PostMapping("/update")

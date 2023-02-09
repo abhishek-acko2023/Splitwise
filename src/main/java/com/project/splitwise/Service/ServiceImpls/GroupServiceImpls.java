@@ -2,11 +2,14 @@ package com.project.splitwise.Service.ServiceImpls;
 
 import com.project.splitwise.Dao.GroupDao;
 import com.project.splitwise.Dto.Request.Group;
+import com.project.splitwise.Dto.Response.Success.SuccessResponse;
 import com.project.splitwise.Repository.GroupRepo;
 import com.project.splitwise.Service.ServiceInterface.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +21,7 @@ public class GroupServiceImpls implements GroupService {
         this.groupRepo = groupRepo;
     }
 
-    public int createGroup(Group group){
+    public ResponseEntity<Object> createGroup(Group group){
         GroupDao groupDao = new GroupDao(
                 group.getGroupName(),
                 group.getGroupDescription(),
@@ -27,22 +30,27 @@ public class GroupServiceImpls implements GroupService {
         );
         try{
             groupRepo.save(groupDao);
-        }catch (Exception e){
-            return -1;
+        }catch (Exception err){
+            return ResponseEntity.badRequest().body(err);
         }
-        return 1;
+        return ResponseEntity.ok(new SuccessResponse("Group Created!!!"));
     }
 
-    public List<GroupDao> getGroups(){
-        return groupRepo.findAll() ;
-    }
+    public Optional<Object> getGroups(){
+        List<GroupDao> groupList = new ArrayList<>() ;
+        groupList = groupRepo.findAll() ;
+        if(groupList.size()==0) {
+            return Optional.of("No groups present!!!");
+        }
+            return Optional.of(groupList);
+        }
 
-    public GroupDao groupDetails(Integer groupId) {
+    public Optional<Object> groupDetails(Integer groupId) {
         Optional<GroupDao> optionalGroupDao = groupRepo.findByGroupId(groupId);
         if(optionalGroupDao.isPresent()){
             GroupDao groupDao = optionalGroupDao.get();
-            return groupDao;
+            return Optional.of(groupDao);
         }
-        return new GroupDao();
+        return Optional.of("Group not found!!");
     }
 }
