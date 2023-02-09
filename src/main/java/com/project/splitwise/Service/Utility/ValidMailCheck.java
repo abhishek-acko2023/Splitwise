@@ -10,11 +10,8 @@ public class ValidMailCheck {
             return false;
         if(email.length() < 6)
             return false;
-        if(email.equals("@")){
-            if(email.contains(".")){
-               return true;
-            }
-        }
+        if(email.contains("@") && email.contains("."))
+            return true;
         return false;
     }
 }

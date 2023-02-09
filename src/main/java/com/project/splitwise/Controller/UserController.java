@@ -35,7 +35,7 @@ public class UserController {
         return userServiceImpls.getUser(userId);}
 
     @PostMapping("/update")
-    public int updateUser(@RequestBody User user){
+    public ResponseEntity<Object> updateUser(@RequestBody User user){
         return userServiceImpls.updateUser(user);
     };
 

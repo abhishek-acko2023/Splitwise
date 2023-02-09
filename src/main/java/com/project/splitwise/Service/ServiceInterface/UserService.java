@@ -13,6 +13,6 @@ public interface UserService {
     ResponseEntity<Object> addUser(User user);
     List<UserDTO> getUsers();
     UserDao getUser(Integer id);
-    int updateUser(User user);
+    ResponseEntity<Object> updateUser(User user);
 
 }

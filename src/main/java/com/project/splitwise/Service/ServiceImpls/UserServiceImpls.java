@@ -43,6 +43,8 @@ public class UserServiceImpls implements UserService {
             }
             else if(user.getUserName().length() < 3){
                 err.setError("name should have atleast 3 characters!");
+            }else if(userRepo.findByUserEmail(user.getUserEmail()).isPresent()){
+                err.setError("user with same email already exists!");
             }
             return ResponseEntity.badRequest().body(err);
         }
@@ -65,16 +67,16 @@ public class UserServiceImpls implements UserService {
         }
         return new UserDao() ;
     }
-    public int updateUser(User user) {
+    public ResponseEntity<Object> updateUser(User user) {
         Optional<UserDao> optionalUserDao = userRepo.findByUserEmail(user.getUserEmail());
         if(optionalUserDao.isPresent()){
             UserDao userDao = optionalUserDao.get();
             if(!user.getUserName().isEmpty()){
                 userDao.setUserName(user.getUserName());
                 userRepo.save(userDao);
-                return 1;
+                return ResponseEntity.ok().body(new SuccessResponse("user updated successfully!"));
             }
         }
-        return -1;
+        return ResponseEntity.status(404).body(new ExceptionResponse(404,"no user found with registered email!"));
     }
 }
