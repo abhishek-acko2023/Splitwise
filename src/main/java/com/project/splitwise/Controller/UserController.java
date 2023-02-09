@@ -2,10 +2,10 @@ package com.project.splitwise.Controller;
 
 import com.project.splitwise.Dao.UserDao;
 import com.project.splitwise.Dto.Request.User;
-import com.project.splitwise.Dto.Response.Response;
 import com.project.splitwise.Dto.Response.UserDTO;
 import com.project.splitwise.Service.ServiceImpls.UserServiceImpls;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public Response addUser(@RequestBody User user){
+    public ResponseEntity<Object> addUser(@RequestBody User user){
             return userServiceImpls.addUser(user);
     };
 
